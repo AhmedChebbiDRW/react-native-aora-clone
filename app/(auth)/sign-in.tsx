@@ -2,16 +2,25 @@ import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 import { images } from "../../constants";
 import FormField from "../../components/FormField";
 import { useState } from "react";
+import CustomButton from "../../components/CustomButton";
+import { Link } from "expo-router";
 
 const SignIn = () => {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    console.log(form);
+  };
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
-        <View className="w-full justify-center h-full px-4 my-6">
+        <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image
             source={images.logo}
             resizeMode="contain"
@@ -25,14 +34,31 @@ const SignIn = () => {
             value={form.email}
             handleChangeText={(e: string) => setForm({ ...form, email: e })}
             otherStyles="mt-7"
-            keyboardType="email-adress"
+            placeholder="email-adress"
           />
           <FormField
             title="Password"
-            value={form.email}
+            value={form.password}
             handleChangeText={(e: string) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
           />
+          <CustomButton
+            title={"Sign In"}
+            handlePress={handleSubmit}
+            containerStyles="mt-7"
+            isLoading={isSubmitting}
+          />
+          <View className="justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Don&apos;t have an account?{" "}
+            </Text>
+            <Link
+              href={"/sign-up"}
+              className="text-lg font-psemibold text-secondary"
+            >
+              Sign Up
+            </Link>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
