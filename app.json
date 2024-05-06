@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "first-ts-expo-app",
-    "slug": "first-ts-expo-app",
+    "name": "Raora",
+    "slug": "raora",
+    "scheme": "raora",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
