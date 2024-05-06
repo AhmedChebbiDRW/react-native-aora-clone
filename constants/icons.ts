@@ -12,7 +12,7 @@ import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
 
-export default {
+const icons = {
   play,
   bookmark,
   home,
@@ -27,3 +27,5 @@ export default {
   eyeHide,
   eye,
 };
+
+export default icons;
