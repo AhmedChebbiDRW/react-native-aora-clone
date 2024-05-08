@@ -17,13 +17,23 @@ export const appwriteConfig = {
   storageId: "663901e0000600676f0f",
 };
 
+const {
+  databaseId,
+  endpoint,
+  platform,
+  projectId,
+  storageId,
+  userCollectionId,
+  videoCollectionId,
+} = appwriteConfig;
+
 // Init your React Native SDK
 const client = new Client();
 
 client
-  .setEndpoint(appwriteConfig.endpoint) // Your Appwrite Endpoint
-  .setProject(appwriteConfig.projectId) // Your project ID
-  .setPlatform(appwriteConfig.platform); // Your application ID or bundle ID.
+  .setEndpoint(endpoint) // Your Appwrite Endpoint
+  .setProject(projectId) // Your project ID
+  .setPlatform(platform); // Your application ID or bundle ID.
 
 const account = new Account(client);
 const avatars = new Avatars(client);
@@ -49,8 +59,8 @@ export const createUser = async (
     await signIn(email, password);
 
     const newUser = await databases.createDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      databaseId,
+      userCollectionId,
       ID.unique(),
       {
         accountId: newAccount.$id,
@@ -82,14 +92,37 @@ export const getCurrentUser = async () => {
     const currentAccount = await account.get();
     if (!currentAccount) throw Error;
     const currentUser = await databases.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.userCollectionId,
+      databaseId,
+      userCollectionId,
       [Query.equal("accountId", currentAccount.$id)]
     );
     if (!currentUser) throw Error;
     return currentUser;
   } catch (error: any) {
     console.log(error);
+    throw new Error(error);
+  }
+};
+
+export const getAllPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(databaseId, videoCollectionId);
+    return posts.documents;
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(error);
+  }
+};
+
+export const getLatestPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(databaseId, videoCollectionId, [
+      Query.orderDesc("$createdAt"),
+      Query.limit(3),
+    ]);
+
+    return posts.documents;
+  } catch (error: any) {
     throw new Error(error);
   }
 };
