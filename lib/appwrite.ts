@@ -6,6 +6,7 @@ import {
   Databases,
   Query,
 } from "react-native-appwrite";
+import { Data } from "../components/Trending";
 
 export const appwriteConfig = {
   endpoint: "https://cloud.appwrite.io/v1",
@@ -121,6 +122,17 @@ export const getLatestPosts = async () => {
       Query.limit(3),
     ]);
 
+    return posts.documents;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const searchPosts = async (query: string) => {
+  try {
+    const posts = await databases.listDocuments(databaseId, videoCollectionId, [
+      Query.search("title", query),
+    ]);
     return posts.documents;
   } catch (error: any) {
     throw new Error(error);
