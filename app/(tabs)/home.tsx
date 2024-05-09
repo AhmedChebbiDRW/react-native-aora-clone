@@ -4,18 +4,22 @@ import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 
 import { images } from "../../constants";
 import useAppwrite from "../../lib/useAppwrite";
-import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import VideoCard from "../../components/VideoCard";
 import EmptyState from "../../components/EmptyState";
 import SearchInput from "../../components/SearchInput";
 import Trending, { Data } from "../../components/Trending";
+import { useGlobalContext } from "../../context/GlobalProvider";
+import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 
 const Home = () => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const { user } = useGlobalContext();
+
   const { data: posts, isLoading, refetch } = useAppwrite({ fn: getAllPosts });
   const { data: latestPosts, refetch: refetchLatest } = useAppwrite({
     fn: getLatestPosts,
   });
-  const [refreshing, setRefreshing] = useState(false);
 
   const onrefresh = async () => {
     setRefreshing(true);
@@ -43,10 +47,10 @@ const Home = () => {
             <View className="justify-between items-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">
-                  Welcome Back
+                  Welcome Back,
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Chebbi Ahmed
+                  {user?.username}
                 </Text>
               </View>
               <View className="mt-1.5">
@@ -70,6 +74,8 @@ const Home = () => {
           <EmptyState
             title="No videos Found"
             subtitle="Be the first one to upload a video"
+            btnTitle="Create video"
+            href="/create"
           />
         )}
         refreshControl={

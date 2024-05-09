@@ -17,7 +17,6 @@ const Search = () => {
     isLoading,
     refetch,
   } = useAppwrite({ fn: () => searchPosts(query as string) });
-  console.log(query, posts);
 
   useEffect(() => {
     refetch();
@@ -52,6 +51,8 @@ const Search = () => {
           <EmptyState
             title="No videos Found"
             subtitle="No videos found for this query"
+            btnTitle="Create video"
+            href="/create"
           />
         )}
       />

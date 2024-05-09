@@ -87,21 +87,33 @@ export const signIn = async (email: string, password: string) => {
     throw new Error(error);
   }
 };
-
-export const getCurrentUser = async () => {
+// Get Account
+export const getAccount = async () => {
   try {
     const currentAccount = await account.get();
+
+    return currentAccount;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+// Get Current User
+export const getCurrentUser = async () => {
+  try {
+    const currentAccount = await getAccount();
     if (!currentAccount) throw Error;
     const currentUser = await databases.listDocuments(
-      databaseId,
-      userCollectionId,
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
       [Query.equal("accountId", currentAccount.$id)]
     );
+
     if (!currentUser) throw Error;
-    return currentUser;
-  } catch (error: any) {
+    return currentUser.documents[0];
+  } catch (error) {
     console.log(error);
-    throw new Error(error);
+    return null;
   }
 };
 
@@ -134,6 +146,27 @@ export const searchPosts = async (query: string) => {
       Query.search("title", query),
     ]);
     return posts.documents;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const getUserPosts = async (userId: number) => {
+  try {
+    const posts = await databases.listDocuments(databaseId, videoCollectionId, [
+      Query.equal("creator", userId),
+    ]);
+    return posts.documents;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+
+export const signOut = async () => {
+  try {
+    const session = await account.deleteSession("current");
+
+    return session;
   } catch (error: any) {
     throw new Error(error);
   }

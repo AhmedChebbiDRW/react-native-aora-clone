@@ -12,7 +12,7 @@ import { icons } from "../constants";
 import { router, usePathname } from "expo-router";
 
 interface FormFieldProps {
-  initialQuery: string;
+  initialQuery?: string;
 }
 
 const SearchInput = ({ initialQuery }: FormFieldProps) => {
