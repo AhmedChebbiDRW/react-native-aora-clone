@@ -1,8 +1,7 @@
-import { router } from "expo-router";
-import React, { useState } from "react";
 import { ResizeMode, Video } from "expo-av";
 import * as ImagePicker from "expo-image-picker";
-import * as DocumentPicker from "expo-document-picker";
+import { router } from "expo-router";
+import React, { useState } from "react";
 import {
   Alert,
   Image,
